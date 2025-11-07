@@ -1,0 +1,2 @@
+# Default variables for hardening run
+stig_role: "ansible-lockdown.debian10-stig"  # adjust for your version, or use internal role

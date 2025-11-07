@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "patternProperties": {
+    "^[a-z0-9._-]+$": {
+      "type": "object",
+      "required": ["niap", "fips", "provenance"],
+      "properties": {
+        "os_pretty": { "type": "string" },
+        "niap": {
+          "type": "object",
+          "required": ["status", "pcl_entries"],
+          "properties": {
+            "status": { "enum": ["current", "previous", "in_process", "claim_only", "none"] },
+            "pcl_entries": { "type": "array", "items": { "type": "string", "format": "uri" } },
+            "notes": { "type": "string" }
+          }
+        },
+        "fips": {
+          "type": "object",
+          "required": ["status", "cmvp_modules"],
+          "properties": {
+            "status": { "enum": ["current", "module_vendor", "claim_only", "none"] },
+            "cmvp_modules": { "type": "array", "items": { "type": "string", "format": "uri" } },
+            "notes": { "type": "string" }
+          }
+        },
+        "claims": {
+          "type": "object",
+          "properties": {
+            "text": { "type": "string" },
+            "urls": { "type": "array", "items": { "type": "string", "format": "uri" } }
+          },
+          "additionalProperties": false
+        },
+        "provenance": {
+          "type": "object",
+          "required": ["analyst", "verified_at"],
+          "properties": {
+            "analyst": { "type": "string" },
+            "verified_at": { "type": "string" },
+            "sources": { "type": "array", "items": { "type": "string", "format": "uri" } }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

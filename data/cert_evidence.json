@@ -1,0 +1,70 @@
+{
+  "debian-13": {
+    "os_pretty": "Debian 13 (Trixie)",
+    "niap": {
+      "status": "none",
+      "pcl_entries": [],
+      "notes": ""
+    },
+    "fips": {
+      "status": "module_vendor",
+      "cmvp_modules": [],
+      "notes": ""
+    },
+    "claims": {
+      "text": "",
+      "urls": []
+    },
+    "provenance": {
+      "analyst": "",
+      "verified_at": "",
+      "sources": []
+    }
+  },
+
+  "debian-12": {
+    "os_pretty": "Debian 12 (Bookworm)",
+    "niap": {
+      "status": "none",
+      "pcl_entries": [],
+      "notes": ""
+    },
+    "fips": {
+      "status": "module_vendor",
+      "cmvp_modules": [],
+      "notes": "Using vendor-provided FIPS-validated crypto modules (document vendor and module IDs)."
+    },
+    "claims": {
+      "text": "",
+      "urls": []
+    },
+    "provenance": {
+      "analyst": "",
+      "verified_at": "",
+      "sources": []
+    }
+  },
+
+  "debian-11": {
+    "os_pretty": "Debian 11 (Bullseye)",
+    "niap": {
+      "status": "none",
+      "pcl_entries": [],
+      "notes": ""
+    },
+    "fips": {
+      "status": "claim_only",
+      "cmvp_modules": [],
+      "notes": "Placeholder; update if vendor modules are present."
+    },
+    "claims": {
+      "text": "",
+      "urls": []
+    },
+    "provenance": {
+      "analyst": "",
+      "verified_at": "",
+      "sources": []
+    }
+  }
+}

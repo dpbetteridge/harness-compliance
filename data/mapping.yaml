@@ -1,0 +1,10 @@
+# Map candidate OS → SCAP content/profile to use during STIG scan
+# We'll wire this into the scan script later.
+profiles:
+  debian-12:
+    content: "/usr/share/xml/scap/ssg/content/ssg-debian12-ds.xml"
+    profile: "xccdf_org.ssgproject.content_profile_stig"
+  debian-11:
+    content: "/usr/share/xml/scap/ssg/content/ssg-debian11-ds.xml"
+    profile: "xccdf_org.ssgproject.content_profile_stig"
+

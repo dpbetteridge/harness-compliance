@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Resolve repo root regardless of cwd
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+ROOT="$(cd "$SCRIPT_DIR/.." && pwd -P)"
+OUT="$ROOT/out"
+
+cmd="${1:-gather}"
+
+run_detect() { python3 "$ROOT/scripts/00_detect_os.py" > /dev/null; }
+run_fips()   { bash "$ROOT/scripts/05_collect_fips_posture.sh" > /dev/null; }
+run_stig()   { bash "$ROOT/scripts/20_stig_scan.sh" > /dev/null; }
+run_cert()   { python3 "$ROOT/scripts/10_cert_validation.py"; }
+
+print_summary() {
+  echo "── Evidence Summary ─────────────────────────"
+  [[ -f "$OUT/os_facts.json" ]]  && echo "[os_facts]     $OUT/os_facts.json"
+  [[ -f "$OUT/host_fips.json" ]] && echo "[host_fips]    $OUT/host_fips.json"
+  [[ -f "$OUT"/stig_*/*/summary.json ]]     && echo "[stig_summary] $(ls "$OUT"/stig_*/*/summary.json 2>/dev/null | head -n1)"
+  [[ -f "$OUT/cert_status.json" ]] && echo "[cert_status]  $OUT/cert_status.json"
+  [[ -f "$OUT/oval/summary-$(jq -r '.os_release.VERSION_CODENAME' "$OUT/os_facts.json" 2>/dev/null).json" ]] && echo "[oval_summary] $(ls "$OUT"/oval/summary-*.json 2>/dev/null | tail -n1)"
+
+  echo "────────────────────────────────────────────"
+}
+
+case "$cmd" in
+  gather)
+    mkdir -p "$OUT"
+    echo "[1/4] Detecting OS…"; run_detect
+    echo "[2/4] Collecting FIPS posture…"; run_fips
+    echo "[3/4] Running STIG alignment scan…"; run_stig
+    echo "[4/4] Computing certification status…"; run_cert
+    print_summary
+    ;;
+  detect) run_detect; print_summary ;;
+  fips)   run_fips;   print_summary ;;
+  stig)   run_stig;   print_summary ;;
+  cert)   run_cert;   print_summary ;;
+  *)
+    echo "Usage: scripts/hc [gather|detect|fips|cert]"; exit 2;;
+esac
